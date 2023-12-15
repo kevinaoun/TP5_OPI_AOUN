@@ -1,0 +1,46 @@
+2) Pour générer des '.o' on utilise la commande "gcc -c -o bonjour.o bonjour.c" pour l'exemple de notre fichier 'bonjour.c'.
+
+5) 
+##################################################
+        salut
+        |<------salut.o
+        |    |<------salut.c
+        |<------heure.o
+        |    |<------heure.c
+        |<------libsalutations.a
+        |    |<------bonjour
+        |    |    |<------bonjour.o
+        |    |        |<------bonjour.c
+        |    |<------bonsoir
+        |    |    |<------bonsoir.o
+        |    |        |<------bonsoir.c
+        |    |<------bonnenuit
+        |    |    |<------bonnenuit.o
+        |    |        |<------bonnenuit.c
+##################################################
+
+6)  -I../lib permet de montrer au makefile de src où trouver les headers 'bonjour.h', 'bonsoir.h', 'bonnenuit.h'.
+    -L../lib permety de montrer au makefile de src où trouver la bibiliothèque 'libsalutations.a' à link avec '-libsalutations'.
+
+
+MAKEFILE FINAL :
+
+all : makeLIB makeSRC exe #clean
+
+makeLIB : #lib/makefile
+	@$(MAKE) -C lib	
+# equivalent a "cd lib && make"
+
+makeSRC : #src/makefile
+	@$(MAKE) -C src	
+# equivalent a "cd src && make"
+
+exe :
+	@./src/salut
+
+clean :
+	@rm -rf src/salut
+	@cd src && rm *.o
+	@cd lib && rm *.o
+##	Le 'clean' supprime l'executable et les '.o'. 
+##	On peut l'appeler avec "make clean" mais il n'est pas necessaire.
